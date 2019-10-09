@@ -8,7 +8,7 @@ import {
   routeHasExist,
   routeEqual,
   getRouteTitleHandled,
-  localSave,
+  // localSave,
   localRead
 } from '@/libs/util'
 import { saveErrorLogger } from '@/api/data'
@@ -75,10 +75,6 @@ export default {
         }
         setTagNavListInLocalstorage([...state.tagNavList])
       }
-    },
-    setLocal (state, lang) {
-      localSave('local', lang)
-      state.local = lang
     },
     addError (state, error) {
       state.errorList.push(error)
