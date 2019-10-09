@@ -19,7 +19,9 @@ import 'v-org-tree/dist/v-org-tree.css'
 /* eslint-disable */
 // if (process.env.NODE_ENV !== 'production') require('@/mock')
 
-Vue.use(iView)
+Vue.use(iView, {
+  i18n: (key, value) => i18n.t(key, value)
+})
 Vue.use(TreeTable)
 Vue.use(VOrgTree)
 /**
@@ -44,7 +46,7 @@ Vue.directive('clickOutside', clickOutside)
 new Vue({
   el: '#app',
   router,
-  // i18n,
+  i18n,
   store,
   render: h => h(App)
 })

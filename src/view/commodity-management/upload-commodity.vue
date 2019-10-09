@@ -537,7 +537,7 @@ export default {
     }
   },
   created () {
-    this.getBanner()
+    // this.getBanner()
   },
   methods: {
     getBanner () {

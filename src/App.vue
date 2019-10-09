@@ -5,8 +5,15 @@
 </template>
 
 <script>
+import { getStorage } from '@/libs/util'
 export default {
-  name: 'App'
+  name: 'App',
+  created () {
+    const userInfo = getStorage('userInfo')
+    if (userInfo) {
+      this.$store.commit('setUserInfo', userInfo)
+    }
+  }
 }
 </script>
 

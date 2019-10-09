@@ -1,6 +1,5 @@
 import {
   login,
-  logout,
   getUserInfo,
   getMessage,
   getContentByMsgId,
@@ -9,10 +8,11 @@ import {
   restoreTrash,
   getUnreadCount
 } from '@/api/user'
-import { setToken, getToken } from '@/libs/util'
+import { setToken, getToken, setStorage, removeStorage } from '@/libs/util'
 
 export default {
   state: {
+    userInfo: {},
     userName: '',
     userId: '',
     avatarImgPath: '',
@@ -26,6 +26,16 @@ export default {
     messageContentStore: {}
   },
   mutations: {
+    setUserInfo (state, userInfo) {
+      setStorage('userInfo', userInfo)
+      state.userInfo = userInfo
+    },
+    userLogout (state, router) {
+      removeStorage('userInfo')
+      removeStorage('accessToken')
+      state.userInfo = {}
+      router.replace({ name: 'login' })
+    },
     setAvatar (state, avatarPath) {
       state.avatarImgPath = avatarPath
     },
@@ -74,36 +84,21 @@ export default {
   },
   actions: {
     // 登录
-    handleLogin (commit, { userName, password }) {
-      userName = userName.trim()
-      return new Promise((resolve, reject) => {
-        login({
-          userName,
-          password
-        }).then(res => {
-          const data = res.data
-          commit('setToken', data.token)
-          resolve()
-        }).catch(err => {
-          reject(err)
-        })
+    async handleLogin ({ commit }, { username, password }) {
+      username = username.trim()
+      const { result } = await login({
+        username,
+        password
       })
+      // setToken('accessToken', result)
+      setStorage('accessToken', result)
+      const { result: userInfoData } = await getUserInfo()
+      commit('setUserInfo', userInfoData)
     },
     // 退出登录
-    handleLogOut ({ state, commit }) {
-      return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('setToken', '')
-          commit('setAccess', [])
-          resolve()
-        }).catch(err => {
-          reject(err)
-        })
-        // 如果你的退出登录无需请求接口，则可以直接使用下面三行代码而无需使用logout调用接口
-        // commit('setToken', '')
-        // commit('setAccess', [])
-        // resolve()
-      })
+    handleLogOut ({ commit }, router) {
+      console.log(router)
+      commit('userLogout', router)
     },
     // 获取用户相关信息
     getUserInfo ({ state, commit }) {

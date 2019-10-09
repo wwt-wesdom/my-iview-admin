@@ -55,8 +55,7 @@ module.exports = {
       '/console': {
         target: 'http://192.168.100.230:9400', // 预发环境
         // target: "https://m.chapaiming.com", //正式环境
-        changeOrigin: true,
-        ws: false
+        changeOrigin: true
       }
     }
   }

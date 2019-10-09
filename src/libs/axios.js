@@ -1,25 +1,12 @@
 import axios from 'axios'
-import store from '@/store'
 import { getStorage } from './util'
 import router from '@/router'
 import { stringify } from 'qs'
+import { Message } from 'iview'
 
-const addErrorLog = errorInfo => {
-  const { statusText, status, request: { responseURL } } = errorInfo
-  let info = {
-    type: 'ajax',
-    code: status,
-    mes: statusText,
-    url: responseURL
-  }
-  if (!responseURL.includes('save_error_logger')) store.dispatch('addErrorLog', info)
-}
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 class HttpRequest {
-  /* constructor (baseUrl = baseURL) {
-    this.baseUrl = baseUrl
-    this.queue = {}
-  } */
   static getInsideConfig () {
     return {}
   }
@@ -35,6 +22,7 @@ class HttpRequest {
       }
       return config
     }, error => {
+      console.log(error)
       return Promise.reject(error)
     })
     // 响应拦截
@@ -50,22 +38,13 @@ class HttpRequest {
         if (success) {
           return res.data
         } else {
-          this.$Message.error(message)
+          Message.error(message)
           return Promise.reject(message)
         }
       }
     }, error => {
-      this.destroy(url)
-      let errorInfo = error.response
-      if (!errorInfo) {
-        const { request: { statusText, status }, config } = JSON.parse(JSON.stringify(error))
-        errorInfo = {
-          statusText,
-          status,
-          request: { responseURL: config.url }
-        }
-      }
-      addErrorLog(errorInfo)
+      // this.destroy(url)
+      console.log(error)
       return Promise.reject(error)
     })
   }
