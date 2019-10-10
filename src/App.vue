@@ -9,6 +9,7 @@ import { getStorage } from '@/libs/util'
 export default {
   name: 'App',
   created () {
+    // 页面刷新同步用户数据到store
     const userInfo = getStorage('userInfo')
     if (userInfo) {
       this.$store.commit('setUserInfo', userInfo)

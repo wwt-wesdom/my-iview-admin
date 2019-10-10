@@ -4,7 +4,8 @@
  * bucket: 阿里云存储域地址
  * aliCallbackImgUrl: 拼接阿里云图片外网链接地址（前缀）
  */
-import api from '@/api/index'
+import { getAliToken } from '@/api/alias'
+
 const domain = window.location.protocol + '//' + window.location.host
 // let bucket = 'taoke-prod';
 // let aliCallbackImgUrl = 'https://taoke-prod.oss-cn-hangzhou.aliyuncs.com/';
@@ -47,24 +48,21 @@ const aliUploadConfig = {
   /**
    * 阿里云上传Buffer文件
    */
-  aliUploadImgBuffer (key, file) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const result = await getAliToken()
-        const client = new OSS.Wrapper({
-          accessKeyId: result.result.AccessKeyId,
-          accessKeySecret: result.result.AccessKeySecret,
-          stsToken: result.result.SecurityToken,
-          bucket: bucket,
-          endpoint: 'https://oss-cn-hangzhou.aliyuncs.com',
-          secure: true
-        })
-        const aliClineRes = await client.put(key, file)
-        resolve(aliClineRes)
-      } catch (e) {
-        reject(e)
-      }
-    })
+  async aliUploadImgBuffer (key, file) {
+    try {
+      const result = await getAliToken()
+      const client = new OSS.Wrapper({
+        accessKeyId: result.result.AccessKeyId,
+        accessKeySecret: result.result.AccessKeySecret,
+        stsToken: result.result.SecurityToken,
+        bucket: bucket,
+        endpoint: 'https://oss-cn-hangzhou.aliyuncs.com',
+        secure: true
+      })
+      return await client.put(key, file)
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
 

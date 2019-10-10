@@ -22,7 +22,7 @@ class HttpRequest {
       }
       return config
     }, error => {
-      console.log(error)
+      Message.error(error)
       return Promise.reject(error)
     })
     // 响应拦截
@@ -43,8 +43,7 @@ class HttpRequest {
         }
       }
     }, error => {
-      // this.destroy(url)
-      console.log(error)
+      Message.error(error)
       return Promise.reject(error)
     })
   }

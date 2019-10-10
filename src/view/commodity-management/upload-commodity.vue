@@ -9,33 +9,41 @@
     >
       <div class="title-category">
         <div class="title">标题与类目</div>
-        <FormItem label="类目" prop="category" class="mt-20">
-         <div class="width-1000 position-relative">
-           <Cascader
-             class="width-1000"
-             v-model="formValidate.category"
-             :data="data"
-             filterable
-             :render-format="formatCascader"
-             @on-change="categoryChange"
-           ></Cascader>
-           <span class="cl-blue recently-used cursor-p" @click="showCategoryListFun">最近使用</span>
-           <div v-show="showCategoryList" class="recently-used-list">
-             <span class="pd-5 cl-333 cursor-p" @click="changeCategoryValue(item)" v-for="item in categoryHistoryList" :key="item">{{item}}</span>
-           </div>
-         </div>
-        </FormItem>
-        <FormItem label="商品标题" prop="commodityTitle">
-          <div class="width-1000 position-relative">
-            <Input
-              type="text"
-              v-model="formValidate.commodityTitle"
-              placeholder="请输入商品标题"
-              :maxlength="128"
-            ></Input>
-            <span class="title-length">{{formValidate.commodityTitle.trim().length}}/128</span>
-          </div>
-        </FormItem>
+        <Row>
+          <Col span="16">
+            <FormItem label="类目" prop="category" class="mt-20">
+              <div class="position-relative">
+                <Cascader
+                  class=""
+                  v-model="formValidate.category"
+                  :data="data"
+                  filterable
+                  :render-format="formatCascader"
+                  @on-change="categoryChange"
+                ></Cascader>
+                <span class="cl-blue recently-used cursor-p" @click="showCategoryListFun">最近使用</span>
+                <div v-show="showCategoryList" class="recently-used-list">
+                  <span class="pd-5 cl-333 cursor-p" @click="changeCategoryValue(item)" v-for="item in categoryHistoryList" :key="item">{{item}}</span>
+                </div>
+              </div>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row>
+          <Col span="16">
+            <FormItem label="商品标题" prop="commodityTitle">
+              <div class="position-relative">
+                <Input
+                  type="text"
+                  v-model="formValidate.commodityTitle"
+                  placeholder="请输入商品标题"
+                  :maxlength="128"
+                ></Input>
+                <span class="title-length">{{formValidate.commodityTitle.trim().length}}/128</span>
+              </div>
+            </FormItem>
+          </Col>
+        </Row>
         <FormItem label="商品标签" prop="commodityLabel">
           <CheckboxGroup v-model="formValidate.commodityLabel">
             <Checkbox label="印花printing"></Checkbox>
@@ -303,7 +311,6 @@
 </template>
 
 <script>
-import api from '@/api/index'
 import Editor from '_c/editor'
 import MyUpload from '@/components/upload/my-upload'
 import { aliCallbackImgUrl } from '@/libs/aliUploadConfig'
@@ -537,19 +544,8 @@ export default {
     }
   },
   created () {
-    // this.getBanner()
   },
   methods: {
-    getBanner () {
-      api
-        .getByAdType({
-          adType: 'homePage',
-          showMode: 'all'
-        })
-        .then(res => {
-          // console.log(res)
-        })
-    },
     changeCategoryValue (val) {
       this.formValidate.category = val.split('>')
       this.showCategoryList = false
@@ -705,7 +701,6 @@ export default {
   left: 0;
   background-color: #fff;
   z-index: 1;
-  width: 1000px;
   padding: 10px;
   box-shadow: 0 0 5px 5px #eee;
   border-radius: 10px;

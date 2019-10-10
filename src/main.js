@@ -19,7 +19,9 @@ import 'v-org-tree/dist/v-org-tree.css'
 // if (process.env.NODE_ENV !== 'production') require('@/mock')
 
 Vue.use(iView)
+// 树形表格
 Vue.use(TreeTable)
+// 组织图
 Vue.use(VOrgTree)
 /**
  * @description 注册admin内置插件
